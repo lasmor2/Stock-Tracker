@@ -4,6 +4,9 @@ import {useForm} from 'react-hook-form';
 import {Button} from '@/components/ui/button';
 import InputField from '@/components/forms/inputField';
 import FooterLink from '@/components/FooterLink';
+import {signInWithEmail} from "@/lib/actions/auth.actions";
+import {toast} from "sonner";
+import {useRouter} from "next/navigation";
 
 interface SignInFormData {
     email: string;
@@ -11,6 +14,7 @@ interface SignInFormData {
 }
 
 const SignIn = () => {
+    const router = useRouter()
     const {
         register,
         handleSubmit,
@@ -24,9 +28,17 @@ const SignIn = () => {
     });
     const onsubmit = async (data: SignInFormData) => {
         try {
-            console.log(data)
+            const result = await signInWithEmail(data);
+            if (result.success) {
+                router.push("/")
+            } else {
+                toast.error("Invalid credentials", {description: "Please check your email and password"})
+            }
         } catch (error) {
             console.log(error)
+            toast.error("sign in failed", {
+                description: error instanceof Error ? error.message : "An unknown error occurred"
+            })
         }
     }
     return (

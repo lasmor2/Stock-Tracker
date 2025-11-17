@@ -7,6 +7,9 @@ import SelectField from "@/components/forms/selectField";
 import FooterLink from "@/components/FooterLink";
 import {INVESTMENT_GOALS, PREFERRED_INDUSTRIES, RISK_TOLERANCE_OPTIONS} from "@/lib/constants";
 import {CountrySelectField} from "@/components/forms/countrySelectField";
+import {signUpWithEmail} from "@/lib/actions/auth.actions";
+import {useRouter} from "next/navigation";
+import {toast} from "sonner";
 
 interface SignUpFormData {
     fullName: string;
@@ -19,6 +22,7 @@ interface SignUpFormData {
 }
 
 const SignUp = () => {
+    const router = useRouter()
     const {
         register,
         handleSubmit,
@@ -38,9 +42,13 @@ const SignUp = () => {
     })
     const onsubmit = async (data: SignUpFormData) => {
         try {
-            console.log(data)
+            const result = await signUpWithEmail(data);
+            if (result.success) router.push("/")
         } catch (error) {
             console.log(error)
+            toast.error("signup failed", {
+                description: error instanceof Error ? error.message : "An unknown error occurred"
+            })
         }
     }
     return (
