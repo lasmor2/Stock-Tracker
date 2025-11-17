@@ -29,7 +29,11 @@ const SignIn = () => {
     const onsubmit = async (data: SignInFormData) => {
         try {
             const result = await signInWithEmail(data);
-            if (result.success) router.push("/")
+            if (result.success) {
+                router.push("/")
+            } else {
+                toast.error("Invalid credentials", {description: "Please check your email and password"})
+            }
         } catch (error) {
             console.log(error)
             toast.error("sign in failed", {
