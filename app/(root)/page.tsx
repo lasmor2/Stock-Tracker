@@ -23,9 +23,7 @@ const HomePage = () => {
                     className={"custom-chart"}
                 />
             </div>
-
         </section>
-
         <section className={"grid w-full gap-8 home-section"}>
             <div className={"h-full md:col-span-1 xl:col-span-1"}>
                 <TradingViewWidget
