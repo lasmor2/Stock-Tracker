@@ -84,18 +84,25 @@ export const formatArticle = (
     isCompanyNews: boolean,
     symbol?: string,
     index: number = 0
-) => ({
-    id: isCompanyNews ? Date.now() + Math.random() : article.id + index,
-    headline: article.headline!.trim(),
-    summary:
-        article.summary!.trim().substring(0, isCompanyNews ? 200 : 150) + '...',
-    source: article.source || (isCompanyNews ? 'Company News' : 'Market News'),
-    url: article.url!,
-    datetime: article.datetime!,
-    image: article.image || '',
-    category: isCompanyNews ? 'company' : article.category || 'general',
-    related: isCompanyNews ? symbol! : article.related || '',
-});
+) => {
+    // Ensure article is validated first
+    if (!validateArticle(article)) {
+        throw new Error('Invalid article: missing required fields');
+    }
+    
+    return {
+        id: isCompanyNews ? Date.now() + Math.random() : article.id + index,
+        headline: article.headline.trim(),
+        summary:
+            article.summary.trim().substring(0, isCompanyNews ? 200 : 150) + '...',
+        source: article.source || (isCompanyNews ? 'Company News' : 'Market News'),
+        url: article.url,
+        datetime: article.datetime,
+        image: article.image || '',
+        category: isCompanyNews ? 'company' : article.category || 'general',
+        related: isCompanyNews ? symbol! : article.related || '',
+    };
+};
 
 export const formatChangePercent = (changePercent?: number) => {
     if (changePercent == null) return '';
