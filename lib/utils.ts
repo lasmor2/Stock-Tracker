@@ -90,6 +90,11 @@ export const formatArticle = (
         throw new Error('Invalid article: missing required fields');
     }
     
+    // Validate symbol is provided for company news
+    if (isCompanyNews && !symbol) {
+        throw new Error('Symbol is required for company news');
+    }
+    
     return {
         id: isCompanyNews ? Date.now() + Math.random() : article.id + index,
         headline: article.headline.trim(),
@@ -100,7 +105,7 @@ export const formatArticle = (
         datetime: article.datetime,
         image: article.image || '',
         category: isCompanyNews ? 'company' : article.category || 'general',
-        related: isCompanyNews ? symbol! : article.related || '',
+        related: isCompanyNews ? symbol : article.related || '',
     };
 };
 
