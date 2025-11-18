@@ -5,12 +5,12 @@ export const getAllUsersForNewsEmail = async () => {
         const mongoose = await connectToDatabase();
         const db = mongoose.connection.db;
         if (!db) throw new Error('Database connection failed');
-        const users = await db.collection("users").find(
+        const users = await db.collection("user").find(
             {email: {$exists: true, $ne: null}},
             {projection: {_id: 1, id: 1, email: 1, name: 1, country: 1}}
         ).toArray();
         return users.filter((user) => user.email && user.name).map((user) => ({
-            id: user.id || user._id.toString() || "",
+            id: user.id || (user._id ? String(user._id) : ""),
             email: user.email,
             name: user.name,
             country: user.country
