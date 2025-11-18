@@ -97,12 +97,12 @@ export const formatArticle = (
     
     return {
         id: isCompanyNews ? Date.now() + Math.random() : article.id + index,
-        headline: article.headline.trim(),
+        headline: article.headline!.trim(),
         summary:
-            article.summary.trim().substring(0, isCompanyNews ? 200 : 150) + '...',
+            article.summary!.trim().substring(0, isCompanyNews ? 200 : 150) + '...',
         source: article.source || (isCompanyNews ? 'Company News' : 'Market News'),
-        url: article.url,
-        datetime: article.datetime,
+        url: article.url!,
+        datetime: article.datetime!,
         image: article.image || '',
         category: isCompanyNews ? 'company' : article.category || 'general',
         related: isCompanyNews ? symbol : article.related || '',
